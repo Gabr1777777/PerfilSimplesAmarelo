@@ -2,91 +2,202 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema de Publicação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Feed 24h</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f2f5; padding: 20px; }
-        
-        /* Container Principal */
-        .post-container {
-            background: white;
+        /* Estilo Base e Fundo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a; /* Fundo escuro para destacar o neon */
+            background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: white;
+        }
+
+        /* Container de Postagem (Estilo Facebook/Glassmorphism) */
+        .perfil-post-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
             max-width: 500px;
-            margin-bottom: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            margin-bottom: 30px;
+        }
+
+        .post-header {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            color: #00d9ff;
         }
 
         input, textarea {
             width: 100%;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            margin-bottom: 12px;
             box-sizing: border-box;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #00d9ff;
+            box-shadow: 0 0 8px rgba(0, 217, 255, 0.3);
         }
 
         button {
-            background-color: #1877f2;
+            background: linear-gradient(45deg, #0088ff, #00d9ff);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
+            padding: 12px;
             width: 100%;
-        }
-
-        button:hover { background-color: #166fe5; }
-
-        /* Estilo das Publicações */
-        .feed { max-width: 500px; }
-        .publicacao {
-            background: white;
-            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
         }
 
-        .nome-usuario { font-weight: bold; color: #1c1e21; margin-bottom: 5px; }
-        .texto-publicacao { color: #4b4f56; }
+        button:hover {
+            filter: brightness(1.2);
+            transform: translateY(-2px);
+        }
+
+        /* Feed de Notícias */
+        .feed-container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .publicacao {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 5px solid #00d9ff;
+            animation: slideIn 0.4s ease-out;
+            position: relative;
+        }
+
+        .user-info {
+            font-weight: bold;
+            color: #00d9ff;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .user-info span {
+            color: #aaa;
+            font-weight: normal;
+            font-size: 12px;
+        }
+
+        .texto-publicacao {
+            color: #efefef;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="post-container">
-        <input type="text" id="nomeUsuario" placeholder="Seu Nome:">
-        <textarea id="textoPost" rows="3" placeholder="No que você está pensando?"></textarea>
-        <button onclick="publicar()">Publicar</button>
+    <div class="perfil-post-container">
+        <div class="post-header">No que você está pensando?</div>
+        <input type="text" id="nomeUsuario" placeholder="Seu Nome/Nick:">
+        <textarea id="textoPost" rows="3" placeholder="Escreva sua publicação..."></textarea>
+        <button onclick="publicar()">Publicar no Feed</button>
     </div>
 
-    <div id="feed" class="feed"></div>
+    <div id="feed" class="feed-container"></div>
 
     <script>
-        function publicar() {
-            const nome = document.getElementById('nomeUsuario').value;
-            const texto = document.getElementById('textoPost').value;
-            const feed = document.getElementById('feed');
+        // Carrega os posts assim que a página abre
+        window.onload = carregarPosts;
 
-            if (nome === "" || texto === "") {
-                alert("Por favor, preencha o nome e a mensagem!");
+        function publicar() {
+            const nomeInput = document.getElementById('nomeUsuario');
+            const textoInput = document.getElementById('textoPost');
+            const tempoAtual = Date.now();
+
+            if (!nomeInput.value || !textoInput.value) {
+                alert("Por favor, preencha seu nome e a mensagem.");
                 return;
             }
 
-            // Criar o elemento da publicação
-            const novaPubli = document.createElement('div');
-            novaPubli.className = 'publicacao';
+            const novoPost = {
+                id: tempoAtual,
+                nome: nomeInput.value,
+                texto: textoInput.value,
+                data: tempoAtual
+            };
 
-            novaPubli.innerHTML = `
-                <div class="nome-usuario">${nome}</div>
-                <div class="texto-publicacao">${texto}</div>
-            `;
+            // Pega o que já existe no storage ou cria array vazio
+            let posts = JSON.parse(localStorage.getItem('feed_xat_24h')) || [];
+            
+            // Adiciona o novo post no início da lista
+            posts.unshift(novoPost);
+            
+            // Salva de volta no navegador
+            localStorage.setItem('feed_xat_24h', JSON.stringify(posts));
 
-            // Adicionar ao topo do feed
-            feed.prepend(novaPubli);
+            // Limpa apenas o campo de texto (mantém o nome para facilitar a próxima)
+            textoInput.value = "";
+            
+            carregarPosts();
+        }
 
-            // Limpar campos
-            document.getElementById('textoPost').value = "";
+        function carregarPosts() {
+            const feed = document.getElementById('feed');
+            const agora = Date.now();
+            const vinteQuatroHoras = 24 * 60 * 60 * 1000; // Milissegundos em 1 dia
+
+            let posts = JSON.parse(localStorage.getItem('feed_xat_24h')) || [];
+
+            // FILTRO: Remove posts com mais de 24 horas
+            const postsValidos = posts.filter(post => (agora - post.data) < vinteQuatroHoras);
+            
+            // Atualiza o banco local apenas com os válidos
+            localStorage.setItem('feed_xat_24h', JSON.stringify(postsValidos));
+
+            // Limpa o HTML para renderizar a lista atualizada
+            feed.innerHTML = "";
+
+            postsValidos.forEach(post => {
+                const div = document.createElement('div');
+                div.className = 'publicacao';
+                
+                // Formatação simples de "tempo atrás" (opcional)
+                const minutosAtras = Math.floor((agora - post.data) / 60000);
+                let tempoTexto = minutosAtras < 1 ? "Agora mesmo" : `há ${minutosAtras} min`;
+                if (minutosAtras >= 60) tempoTexto = `há ${Math.floor(minutosAtras/60)}h`;
+
+                div.innerHTML = `
+                    <div class="user-info">${post.nome} <span>publicou ${tempoTexto}:</span></div>
+                    <div class="texto-publicacao">${post.texto}</div>
+                `;
+                feed.appendChild(div);
+            });
         }
     </script>
 </body>
