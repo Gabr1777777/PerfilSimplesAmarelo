@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil Profissional - Gabriel</title>
+    <title>XatBook - Gabriel</title>
     <style>
         /* --- ESTILOS GERAIS --- */
         body {
@@ -44,10 +44,9 @@
             text-shadow: 0 0 10px rgba(0, 136, 255, 0.5);
             z-index: 3000;
             pointer-events: none;
-            font-family: 'Arial Black', sans-serif;
         }
 
-        /* --- COLUNA ESQUERDA --- */
+        /* --- PERFIL --- */
         .profile-photo { width: 150px; height: 150px; border-radius: 50%; border: 4px solid #00d9ff; object-fit: cover; transition: 0.3s; }
         .profile-photo:hover { box-shadow: 0 0 20px #00d9ff; transform: scale(1.02); }
         .id-text { color: #aaa; font-size: 14px; margin-top: 5px; font-family: monospace; }
@@ -72,73 +71,55 @@
         .btn.danger { background: #ff3232; border-color: #ff3232; }
         .btn:hover { background: #00d9ff; color: #0a0a0a; box-shadow: 0 0 15px #00d9ff; transform: scale(1.02); }
 
-        /* --- SUB-MENU COMUNIDADE --- */
-        .submenu {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            animation: fadeIn 0.3s ease;
-        }
-        .btn-sub {
-            font-size: 13px;
-            padding: 8px;
-            background: rgba(0, 217, 255, 0.1);
-            border: 1px solid rgba(0, 217, 255, 0.3);
-        }
-
-        /* --- GALERIA & FEED --- */
-        .gallery-container {
-            display: none;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-            animation: fadeIn 0.5s ease;
-        }
-        .gallery-item {
-            width: 100%; aspect-ratio: 1/1; border-radius: 10px;
-            background-size: cover; background-position: center;
-            border: 2px solid rgba(0, 217, 255, 0.3); cursor: pointer; transition: 0.3s;
-        }
-        .gallery-item:hover { border-color: #00d9ff; box-shadow: 0 0 15px #00d9ff; transform: scale(1.03); }
-
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000;
-            backdrop-filter: blur(5px);
-        }
-        .modal-content { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #00d9ff; width: 320px; text-align: center; }
-
+        /* --- ELEMENTOS DINÂMICOS --- */
         .friend-item, .publicacao { 
             background: rgba(255,255,255,0.1); padding: 12px; border-radius: 5px; 
             margin-bottom: 8px; font-size: 14px; border-left: 3px solid #00d9ff; cursor: pointer; transition: 0.3s;
         }
-        .friend-item:hover, .publicacao:hover { background: rgba(0, 217, 255, 0.1); box-shadow: inset 0 0 10px rgba(0,217,255,0.2); }
+        .friend-item:hover, .publicacao:hover { background: rgba(0, 217, 255, 0.1); }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* --- GALERIA & ZOOM --- */
+        .gallery-container { display: none; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .gallery-item { width: 100%; aspect-ratio: 1/1; border-radius: 10px; background-size: cover; background-position: center; border: 2px solid rgba(0, 217, 255, 0.3); cursor: pointer; }
+        
+        .zoom-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); justify-content: center; align-items: center; z-index: 4000; cursor: pointer;
+        }
+        .zoom-overlay img { max-width: 90%; max-height: 90%; border-radius: 10px; border: 3px solid #00d9ff; }
+
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(5px);
+        }
+        .modal-content { background: #111; padding: 25px; border-radius: 15px; border: 1px solid #00d9ff; width: 320px; text-align: center; }
+
+        .submenu { display: none; flex-direction: column; gap: 5px; padding: 10px; background: rgba(0, 0, 0, 0.3); border-radius: 8px; margin-bottom: 10px; }
+        .btn-sub { font-size: 13px; padding: 8px; background: rgba(0, 217, 255, 0.1); border: 1px solid rgba(0, 217, 255, 0.3); }
     </style>
 </head>
 <body>
 
     <div class="brand-footer">XatBook</div>
 
+    <div id="zoomOverlay" class="zoom-overlay" onclick="this.style.display='none'">
+        <img id="imgZoomed" src="">
+    </div>
+
     <div id="modalAmigo" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="color: #00d9ff; margin: 0 0 15px;">Novo Amigo</h3>
-            <input type="text" id="nomeAmigoInput" placeholder="Nome do amigo..." style="width:100%; padding:10px; margin-bottom:15px; background:#000; color:white; border:1px solid #333; box-sizing: border-box;">
-            <button class="btn primary" onclick="confirmarAdicionarAmigo()">Adicionar</button>
+            <h3 style="color: #00d9ff;">Novo Amigo</h3>
+            <input type="text" id="nomeAmigoInput" placeholder="Nome..." style="width:100%; padding:10px; margin-bottom:15px; background:#000; color:white; border:1px solid #333;">
+            <button class="btn primary" onclick="confirmarAdicionarAmigo()">Adicionar para Todos</button>
             <button class="btn" onclick="fecharModal('modalAmigo')">Cancelar</button>
         </div>
     </div>
 
     <div id="modalRemover" class="modal-overlay">
         <div class="modal-content">
-            <h3 id="tituloRemover" style="color: #ff3232; margin: 0 0 15px;">Excluir?</h3>
-            <p id="textoConfirmacao">Deseja remover este item?</p>
-            <button class="btn danger" id="btnConfirmarRemover">Sim, Excluir</button>
+            <h3 id="tituloRemover" style="color: #ff3232;">Excluir?</h3>
+            <p id="textoConfirmacao"></p>
+            <button class="btn danger" id="btnConfirmarRemover">Sim, Excluir Globalmente</button>
             <button class="btn" onclick="fecharModal('modalRemover')">Não, Cancelar</button>
         </div>
     </div>
@@ -155,7 +136,6 @@
                 <button class="btn" onclick="voltarInicio()">Início</button>
                 <button class="btn primary" onclick="abrirModal('modalAmigo')">Adicionar Amigo</button>
                 <button class="btn" onclick="toggleGallery()">Fotos</button>
-                
                 <button class="btn" onclick="toggleComunidade()">Xat Comunidade</button>
                 <div id="menuComunidade" class="submenu">
                     <a href="https://xat.com/TUGA" target="_blank" class="btn btn-sub">Xat TUGA</a>
@@ -167,107 +147,126 @@
         <div class="main-content">
             <div id="galeriaDireita" class="box gallery-container">
                 <div class="gallery-item" style="background-image: url('https://i.imgur.com/MXo7l6I.jpeg');" onclick="openZoom(this)"></div>
-                <div class="gallery-item" style="background-image: url('https://i.imgur.com/MXo7l6I.jpeg');" onclick="openZoom(this)"></div>
                 <div class="gallery-item" style="background-image: url('https://i.imgur.com/h3pyflh.jpeg');" onclick="openZoom(this)"></div>
-                <div class="gallery-item" style="background-image: url('https://i.imgur.com/aeyBhFj.jpeg');" onclick="openZoom(this)"></div>
             </div>
 
             <div class="box">
-                <h3 style="color:#00d9ff; margin-top:0;">Amigos</h3>
+                <h3 style="color:#00d9ff; margin-top:0;">Amigos (Global)</h3>
                 <div id="listaAmigos"></div>
             </div>
 
             <div class="box">
-                <p style="font-weight: bold; margin-top: 0;">Publicar</p>
-                <input type="text" id="nomeUsuario" placeholder="Seu Nome:" style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; background: #000; border: 1px solid #333; color: white; box-sizing: border-box;">
-                <textarea id="textoPost" rows="3" placeholder="No que você está pensando?" style="width: 100%; padding: 10px; border-radius: 5px; background: #000; border: 1px solid #333; color: white; box-sizing: border-box;"></textarea>
-                <button class="btn primary" style="margin-top: 10px;" onclick="publicar()">Publicar</button>
+                <p style="font-weight: bold; margin-top: 0;">Publicar no Mural</p>
+                <input type="text" id="nomeUsuario" placeholder="Seu Nome:" style="width: 100%; padding: 10px; margin-bottom: 10px; background: #000; border: 1px solid #333; color: white;">
+                <textarea id="textoPost" rows="3" placeholder="Sua mensagem..." style="width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: white;"></textarea>
+                <button class="btn primary" style="margin-top: 10px;" onclick="publicar()">Publicar para Todos</button>
             </div>
             <div id="feed"></div>
         </div>
     </div>
 
     <script>
+        /* NOTA PARA O GABRIEL: 
+           Para que "apareça para todo mundo", o navegador sozinho não consegue enviar dados para outros PCs.
+           O código abaixo usa o LocalStorage para você testar, mas para ser GLOBAL, 
+           você precisaria usar uma API de Banco de Dados.
+        */
+
         let elementoParaRemover = null;
         let tipoRemocao = "";
 
         function abrirModal(id) { document.getElementById(id).style.display = 'flex'; }
         function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function toggleComunidade() {
-            const m = document.getElementById('menuComunidade');
-            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+        function openZoom(el) {
+            document.getElementById('imgZoomed').src = el.style.backgroundImage.slice(5, -2);
+            document.getElementById('zoomOverlay').style.display = 'flex';
         }
 
-        function voltarInicio() {
-            document.getElementById('galeriaDireita').style.display = 'none';
-            window.scrollTo({top: 0, behavior: 'smooth'});
-        }
+        // --- LÓGICA DE DADOS ---
+        window.onload = () => { carregarPosts(); carregarAmigos(); };
 
-        function toggleGallery() {
-            const g = document.getElementById('galeriaDireita');
-            g.style.display = (g.style.display === 'grid') ? 'none' : 'grid';
+        function carregarAmigos() {
+            const lista = document.getElementById('listaAmigos');
+            const amigos = JSON.parse(localStorage.getItem('amigos_global')) || [];
+            lista.innerHTML = "";
+            amigos.forEach((nome, index) => {
+                const div = document.createElement('div');
+                div.className = 'friend-item';
+                div.innerText = nome;
+                div.onclick = () => prepararExclusao(div, "Remover " + nome + "?", "amigo", index);
+                lista.appendChild(div);
+            });
         }
-
-        function prepararExclusao(elemento, texto, tipo, idPost = null) {
-            elementoParaRemover = elemento;
-            tipoRemocao = tipo;
-            document.getElementById('textoConfirmacao').innerText = texto;
-            document.getElementById('btnConfirmarRemover').dataset.idPost = idPost;
-            abrirModal('modalRemover');
-        }
-
-        document.getElementById('btnConfirmarRemover').onclick = function() {
-            if (elementoParaRemover) {
-                if (tipoRemocao === "post") {
-                    let posts = JSON.parse(localStorage.getItem('feed_gab')) || [];
-                    posts = posts.filter(p => p.data != this.dataset.idPost);
-                    localStorage.setItem('feed_gab', JSON.stringify(posts));
-                }
-                elementoParaRemover.remove();
-                elementoParaRemover = null;
-            }
-            fecharModal('modalRemover');
-        };
 
         function confirmarAdicionarAmigo() {
             const nome = document.getElementById('nomeAmigoInput').value;
             if (!nome) return;
-            const div = document.createElement('div');
-            div.className = 'friend-item';
-            div.innerText = nome;
-            div.onclick = function() { prepararExclusao(this, "Remover " + nome + "?", "amigo"); };
-            document.getElementById('listaAmigos').appendChild(div);
+            const amigos = JSON.parse(localStorage.getItem('amigos_global')) || [];
+            amigos.push(nome);
+            localStorage.setItem('amigos_global', JSON.stringify(amigos));
             document.getElementById('nomeAmigoInput').value = "";
             fecharModal('modalAmigo');
+            carregarAmigos();
         }
 
-        window.onload = carregarPosts;
         function publicar() {
             const n = document.getElementById('nomeUsuario').value;
             const t = document.getElementById('textoPost').value;
             if(!n || !t) return;
-            const agora = Date.now();
-            const posts = JSON.parse(localStorage.getItem('feed_gab')) || [];
-            posts.unshift({ nome: n, texto: t, data: agora });
-            localStorage.setItem('feed_gab', JSON.stringify(posts));
+            const posts = JSON.parse(localStorage.getItem('feed_global')) || [];
+            posts.unshift({ nome: n, texto: t, data: Date.now() });
+            localStorage.setItem('feed_global', JSON.stringify(posts));
             document.getElementById('textoPost').value = "";
             carregarPosts();
         }
 
         function carregarPosts() {
             const f = document.getElementById('feed');
-            const posts = JSON.parse(localStorage.getItem('feed_gab')) || [];
-            const v = posts.filter(p => (Date.now() - p.data) < 86400000);
+            const posts = JSON.parse(localStorage.getItem('feed_global')) || [];
             f.innerHTML = "";
-            v.forEach(p => {
+            posts.forEach(p => {
                 const d = document.createElement('div');
                 d.className = 'publicacao';
-                d.innerHTML = `<b style="color:#00d9ff">${p.nome}</b> publicou:<br>${p.texto}`;
-                d.onclick = function() { prepararExclusao(this, "Excluir esta mensagem?", "post", p.data); };
+                d.innerHTML = `<b style="color:#00d9ff">${p.nome}</b>:<br>${p.texto}`;
+                d.onclick = () => prepararExclusao(d, "Excluir post de " + p.nome + "?", "post", p.data);
                 f.appendChild(d);
             });
         }
+
+        function prepararExclusao(el, txt, tipo, id) {
+            elementoParaRemover = el;
+            tipoRemocao = tipo;
+            document.getElementById('textoConfirmacao').innerText = txt;
+            document.getElementById('btnConfirmarRemover').dataset.id = id;
+            abrirModal('modalRemover');
+        }
+
+        document.getElementById('btnConfirmarRemover').onclick = function() {
+            const id = this.dataset.id;
+            if (tipoRemocao === "amigo") {
+                let amigos = JSON.parse(localStorage.getItem('amigos_global'));
+                amigos.splice(id, 1);
+                localStorage.setItem('amigos_global', JSON.stringify(amigos));
+                carregarAmigos();
+            } else {
+                let posts = JSON.parse(localStorage.getItem('feed_global'));
+                posts = posts.filter(p => p.data != id);
+                localStorage.setItem('feed_global', JSON.stringify(posts));
+                carregarPosts();
+            }
+            fecharModal('modalRemover');
+        };
+
+        function toggleGallery() { 
+            const g = document.getElementById('galeriaDireita');
+            g.style.display = (g.style.display === 'grid') ? 'none' : 'grid'; 
+        }
+        function toggleComunidade() {
+            const m = document.getElementById('menuComunidade');
+            m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+        }
+        function voltarInicio() { document.getElementById('galeriaDireita').style.display = 'none'; }
     </script>
 </body>
 </html>
