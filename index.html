@@ -3,61 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perfil - Alex Rivera</title>
+<title>Perfil Alex Rivera</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(135deg, #141e30, #243b55);
     color: #fff;
 }
 
-/* HEADER */
-header {
-    text-align: center;
-    padding: 40px 20px;
+/* NAV */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
 }
 
-.profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 4px solid #fff;
-    object-fit: cover;
+nav button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    transition: 0.3s;
 }
 
-h1 {
-    margin: 15px 0 5px;
-}
-
-.info {
-    opacity: 0.8;
-}
-
-.quote {
-    margin-top: 10px;
-    font-style: italic;
-    color: #ccc;
+nav button:hover {
+    background: #00c6ff;
+    color: #000;
 }
 
 /* SECTIONS */
-section {
+.section {
+    display: none;
+    padding: 40px 20px;
     max-width: 1000px;
     margin: auto;
-    padding: 30px 20px;
+    animation: fade 0.5s;
 }
 
-h2 {
-    border-left: 5px solid #00c6ff;
-    padding-left: 10px;
+.active {
+    display: block;
 }
 
-/* ABOUT */
-.about p {
-    line-height: 1.6;
+@keyframes fade {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+/* HOME */
+.home {
+    text-align: center;
+}
+
+.profile-pic {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+
+/* PROFILE */
+.card {
+    background: rgba(255,255,255,0.05);
+    padding: 25px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
 }
 
 /* GALLERY */
@@ -79,18 +103,12 @@ h2 {
 
 /* MUSIC */
 .music-btn {
-    padding: 12px 25px;
-    background: #00c6ff;
+    padding: 12px 20px;
     border: none;
-    border-radius: 25px;
+    border-radius: 20px;
+    background: #00c6ff;
     cursor: pointer;
-    color: #000;
     font-weight: bold;
-    transition: 0.3s;
-}
-
-.music-btn:hover {
-    background: #00a2cc;
 }
 
 .player {
@@ -98,38 +116,47 @@ h2 {
     display: none;
 }
 
-/* FOOTER */
-footer {
-    text-align: center;
-    padding: 20px;
-    opacity: 0.7;
-}
-
 </style>
 </head>
 
 <body>
 
-<header>
+<nav>
+    <button onclick="showSection('home')">Início</button>
+    <button onclick="showSection('profile')">Perfil</button>
+    <button onclick="showSection('gallery')">Fotos</button>
+    <button onclick="showSection('music')">Música</button>
+</nav>
+
+<!-- INICIO -->
+<div id="home" class="section active home">
     <img src="https://picsum.photos/300" class="profile-pic">
     <h1>Alex Rivera</h1>
-    <div class="info">25 anos • Leão</div>
-    <div class="quote">"Vivendo cada momento como se fosse único."</div>
-</header>
+    <p>25 anos • Leão</p>
+    <p><i>"Vivendo cada momento como se fosse único."</i></p>
+</div>
 
-<section class="about">
-    <h2>Sobre Mim</h2>
-    <p>
-        Sou apaixonado por criatividade, música e fotografia. Gosto de explorar novas ideias,
-        criar projetos visuais e compartilhar momentos únicos através de imagens.
-    </p>
-    <p>
-        No meu tempo livre, estou sempre ouvindo música, editando fotos ou buscando inspiração
-        para novos projetos. Acredito que cada detalhe conta uma história.
-    </p>
-</section>
+<!-- PERFIL -->
+<div id="profile" class="section">
+    <div class="card">
+        <h2>Sobre Mim</h2>
+        <p>
+            Sou uma pessoa criativa, apaixonada por música, design e fotografia.
+            Gosto de explorar novas ideias e transformar momentos simples em algo especial.
+        </p>
 
-<section>
+        <h3 style="margin-top:20px;">Detalhes</h3>
+        <p>🎂 Idade: 25 anos</p>
+        <p>♌ Signo: Leão</p>
+        <p>📍 Local: Brasil</p>
+
+        <h3 style="margin-top:20px;">Interesses</h3>
+        <p>🎧 Música, 📸 Fotografia, 💻 Design, 🎮 Games</p>
+    </div>
+</div>
+
+<!-- GALERIA -->
+<div id="gallery" class="section">
     <h2>Galeria</h2>
     <div class="gallery">
         <img src="https://picsum.photos/400?1">
@@ -139,32 +166,31 @@ footer {
         <img src="https://picsum.photos/400?5">
         <img src="https://picsum.photos/400?6">
     </div>
-</section>
+</div>
 
-<section>
+<!-- MUSICA -->
+<div id="music" class="section">
     <h2>Música</h2>
-    <button class="music-btn" onclick="togglePlayer()">Tocar Música 🎧</button>
+    <button class="music-btn" onclick="togglePlayer()">Abrir Player 🎧</button>
 
-    <div class="player" id="player">
+    <div id="player" class="player">
         <audio controls>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-            Seu navegador não suporta áudio.
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
         </audio>
     </div>
-</section>
-
-<footer>
-    © 2026 - Perfil pessoal
-</footer>
+</div>
 
 <script>
+function showSection(sectionId) {
+    document.querySelectorAll('.section').forEach(sec => {
+        sec.classList.remove('active');
+    });
+    document.getElementById(sectionId).classList.add('active');
+}
+
 function togglePlayer() {
     const player = document.getElementById("player");
-    if (player.style.display === "none" || player.style.display === "") {
-        player.style.display = "block";
-    } else {
-        player.style.display = "none";
-    }
+    player.style.display = player.style.display === "block" ? "none" : "block";
 }
 </script>
 
