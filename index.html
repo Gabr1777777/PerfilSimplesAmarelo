@@ -3,166 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MultiTech | Assistência Técnica Premium</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<title>Assistência Técnica</title>
 
 <style>
-:root {
-    --primary:#00d4ff;
-    --secondary:#6e00ff;
-    --dark:#050505;
-    --card:#121214;
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #0f172a;
+    color: white;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-
-body{background:var(--dark);color:#fff}
-
-/* HEADER */
-header{
-position:fixed;width:100%;top:0;
-display:flex;justify-content:space-between;
-padding:15px 8%;
-background:rgba(0,0,0,0.85);
-backdrop-filter:blur(10px);
-z-index:1000;
-border-bottom:1px solid #222;
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: #020617;
 }
 
-/* HERO */
-.hero{
-padding:180px 8% 100px;
-text-align:center;
-background:
-linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.9)),
-url("https://images.unsplash.com/photo-1511707171634-5f897ff02aa9");
-background-size:cover;
+header h1 {
+    color: #22c55e;
 }
 
-.hero h1{
-font-size:3.5rem;
-color:var(--primary);
+.btn {
+    background: #22c55e;
+    padding: 10px 15px;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
 }
 
-.hero p{
-opacity:0.8;
-margin-top:10px;
+.banner {
+    text-align: center;
+    padding: 60px 20px;
 }
 
-.btn{
-background:var(--primary);
-color:#000;
-padding:15px 35px;
-border-radius:50px;
-font-weight:bold;
-text-decoration:none;
-display:inline-block;
-margin-top:20px;
-transition:0.3s;
+.banner h2 {
+    font-size: 30px;
 }
 
-.btn:hover{
-transform:scale(1.05);
+.servicos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 20px;
 }
 
-/* GRID */
-.grid{
-padding:60px 8%;
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
+.card {
+    background: #020617;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
 }
 
-.card{
-background:var(--card);
-border-radius:20px;
-overflow:hidden;
-transition:0.3s;
-border:1px solid #222;
+.card img {
+    width: 100%;
+    border-radius: 10px;
 }
 
-.card:hover{
-transform:translateY(-5px);
-border-color:var(--primary);
+.card h3 {
+    margin-top: 10px;
 }
 
-.card img{
-width:100%;
-height:200px;
-object-fit:cover;
+.diferenciais {
+    text-align: center;
+    padding: 30px;
 }
 
-.card p{
-padding:15px;
-text-align:center;
-font-weight:bold;
-}
-
-/* SEÇÕES */
-.section{
-padding:70px 8%;
-text-align:center;
-}
-
-.section h2{
-color:var(--primary);
-margin-bottom:25px;
-}
-
-/* DIFERENCIAIS */
-.features{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-margin-top:20px;
-}
-
-.feature{
-background:var(--card);
-padding:20px;
-border-radius:15px;
-border:1px solid #222;
-}
-
-/* VIDEO */
-.video video{
-width:100%;
-border-radius:20px;
-margin-top:20px;
-}
-
-/* DEPOIMENTOS */
-.testimonial{
-background:var(--card);
-padding:20px;
-border-radius:15px;
-margin:10px auto;
-max-width:500px;
-border:1px solid #222;
-}
-
-/* FOOTER */
-footer{
-padding:50px;
-text-align:center;
-border-top:1px solid #222;
-opacity:0.8;
-}
-
-/* WHATS */
-.wa{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25d366;
-width:65px;
-height:65px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-box-shadow:0 10px 20px rgba(0,0,0,0.5);
+footer {
+    background: #020617;
+    text-align: center;
+    padding: 20px;
 }
 </style>
 </head>
@@ -170,89 +81,51 @@ box-shadow:0 10px 20px rgba(0,0,0,0.5);
 <body>
 
 <header>
-<strong>MULTITECH</strong>
-<a href="https://wa.me/5511981338017" style="color:var(--primary)">WhatsApp</a>
+    <h1>Sua Assistência</h1>
+    <a href="#" class="btn">WhatsApp</a>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-<h1>MultiTech</h1>
-<p>Assistência Técnica Especializada em Celulares</p>
-<a href="https://wa.me/5511981338017" class="btn">ORÇAMENTO RÁPIDO</a>
+<section class="banner">
+    <h2>Assistência Técnica Especializada em Celulares</h2>
+    <p>Troca de tela, bateria e consertos em geral</p>
+    <a href="#" class="btn">Fale Agora</a>
 </section>
 
-<!-- SERVIÇOS -->
-<section class="grid">
+<section class="servicos">
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97">
-<p>Troca de Tela</p>
+    <img src="https://via.placeholder.com/300x200">
+    <h3>Troca de Tela</h3>
 </div>
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1601972599720-36938d4ecd31">
-<p>Troca de Bateria</p>
+    <img src="https://via.placeholder.com/300x200">
+    <h3>Troca de Bateria</h3>
 </div>
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1580910051074-3eb694886505">
-<p>Conserto de Celulares</p>
+    <img src="https://via.placeholder.com/300x200">
+    <h3>Conserto de Placa</h3>
 </div>
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1603899122933-4463a2c3f4c6?auto=format&fit=crop&w=800&q=80">
-<p>Celulares Quebrados</p>
+    <img src="https://via.placeholder.com/300x200">
+    <h3>Celular Molhado</h3>
 </div>
 
 </section>
 
-<!-- DIFERENCIAIS -->
-<section class="section">
-<h2>Por que escolher a MultiTech?</h2>
-
-<div class="features">
-<div class="feature">⚡ Atendimento rápido</div>
-<div class="feature">🔧 Técnicos especializados</div>
-<div class="feature">🛡️ Garantia nos serviços</div>
-<div class="feature">🚗 Leva e traz</div>
-</div>
-
-</section>
-
-<!-- VIDEO -->
-<section class="section video">
-<h2>Leva e Traz</h2>
-
-<video autoplay muted loop playsinline>
-<source src="https://cdn.coverr.co/videos/coverr-driving-through-the-city-5176/1080p.mp4" type="video/mp4">
-</video>
-
-</section>
-
-<!-- DEPOIMENTOS -->
-<section class="section">
-<h2>Clientes Satisfeitos</h2>
-
-<div class="testimonial">⭐⭐⭐⭐⭐<br>Serviço rápido e confiável!</div>
-<div class="testimonial">⭐⭐⭐⭐⭐<br>Meu celular ficou novo!</div>
-<div class="testimonial">⭐⭐⭐⭐⭐<br>Melhor da região!</div>
-
-</section>
-
-<!-- CTA FINAL -->
-<section class="section">
-<h2>Fale agora com um especialista</h2>
-<a href="https://wa.me/5511981338017" class="btn">CHAMAR NO WHATSAPP</a>
+<section class="diferenciais">
+    <h2>Por que escolher a gente?</h2>
+    <p>✔ Atendimento rápido</p>
+    <p>✔ Garantia no serviço</p>
+    <p>✔ Técnicos especializados</p>
 </section>
 
 <footer>
-<p>📍 Av. Carlos Lacerda, 2878 - Zona Sul</p>
-<p>© MultiTech - Todos os direitos reservados</p>
+    <p>Contato: (11) 99999-9999</p>
+    <p>Instagram: @sualoja</p>
 </footer>
-
-<a href="https://wa.me/5511981338017" class="wa">
-<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="30">
-</a>
 
 </body>
 </html>
