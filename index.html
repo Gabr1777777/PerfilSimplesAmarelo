@@ -34,14 +34,28 @@
             margin-bottom: 20px;
         }
 
-        /* --- COMPONENTES --- */
+        /* --- MARCA D'ÁGUA XATBOOK --- */
+        .brand-footer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #0088ff;
+            text-shadow: 0 0 10px rgba(0, 136, 255, 0.5);
+            z-index: 3000;
+            pointer-events: none; /* Não atrapalha cliques */
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        /* --- COLUNA ESQUERDA --- */
         .profile-photo { width: 150px; height: 150px; border-radius: 50%; border: 4px solid #00d9ff; object-fit: cover; }
         
         .btn {
             background: rgba(255, 255, 255, 0.1);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px;
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
             text-align: center;
@@ -52,115 +66,112 @@
             transition: 0.3s;
         }
         .btn.primary { background: #0088ff; border-color: #0088ff; }
-        .btn:hover { background: #00d9ff; color: #0a0a0a; transform: scale(1.02); }
+        .btn.danger { background: #ff3232; border-color: #ff3232; }
+        .btn:hover { filter: brightness(1.2); transform: scale(1.02); }
 
-        .highlights-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .highlight-item { width: 100%; padding-top: 100%; border-radius: 8px; background-size: cover; background-position: center; border: 1px solid rgba(255,255,255,0.1); }
-
-        /* --- AMIGOS --- */
-        .friends-list-container h3 { color: #00d9ff; margin-top: 0; font-size: 16px; border-bottom: 1px solid rgba(0,217,255,0.2); padding-bottom: 5px; }
-        .friend-item { 
-            background: rgba(255,255,255,0.1); 
-            padding: 10px 12px; 
-            border-radius: 5px; 
-            margin-bottom: 8px; 
-            font-size: 14px;
-            border-left: 3px solid #00d9ff;
-            cursor: pointer;
-            transition: 0.2s;
+        /* --- GALERIA NA DIREITA --- */
+        .gallery-container {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease;
         }
-        .friend-item:hover { background: rgba(0, 217, 255, 0.1); }
+        .gallery-item {
+            width: 100%; aspect-ratio: 1/1; border-radius: 10px;
+            background-size: cover; background-position: center;
+            border: 2px solid rgba(0, 217, 255, 0.3); cursor: pointer; transition: 0.3s;
+        }
 
         /* --- MODAIS --- */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000;
+            backdrop-filter: blur(5px);
         }
-        .modal-content {
-            background: #111;
-            padding: 25px;
-            border-radius: 15px;
-            border: 1px solid #00d9ff;
-            width: 320px;
+        .modal-content { 
+            background: #111; padding: 25px; border-radius: 15px; 
+            border: 1px solid #00d9ff; width: 320px; text-align: center;
             box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
         }
-        .modal-content input {
-            width: 100%; padding: 10px; margin: 15px 0;
-            background: #000; border: 1px solid #333; color: white; border-radius: 5px; box-sizing: border-box;
-        }
-        .info-line { margin: 10px 0; font-size: 14px; border-bottom: 1px solid #222; padding-bottom: 5px; display: flex; justify-content: space-between; }
-        .info-line b { color: #00d9ff; }
 
-        /* --- FEED --- */
-        .publicacao {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 5px solid #00d9ff;
-            margin-top: 15px;
+        .friend-item { 
+            background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px; 
+            margin-bottom: 8px; font-size: 14px; border-left: 3px solid #00d9ff; cursor: pointer;
         }
 
-        @media (max-width: 800px) { .main-container { grid-template-columns: 1fr; } }
+        /* --- ZOOM --- */
+        .zoom-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); justify-content: center; align-items: center; z-index: 2000;
+        }
+        .zoom-overlay img { max-width: 90%; max-height: 90%; border-radius: 10px; }
+
+        .publicacao { background: rgba(255, 255, 255, 0.08); padding: 15px; border-radius: 12px; border-left: 5px solid #00d9ff; margin-top: 15px; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
+    <div class="brand-footer">XatBook</div>
+
     <div id="modalAmigo" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="color: #00d9ff; margin-top: 0;">Novo Amigo</h3>
-            <input type="text" id="nomeAmigoInput" placeholder="Nome do amigo...">
+            <h3 style="color: #00d9ff; margin: 0 0 15px;">Novo Amigo</h3>
+            <input type="text" id="nomeAmigoInput" placeholder="Nome do amigo..." style="width:100%; padding:10px; margin-bottom:15px; background:#000; color:white; border:1px solid #333; box-sizing: border-box;">
             <button class="btn primary" onclick="confirmarAdicionarAmigo()">Adicionar</button>
             <button class="btn" onclick="fecharModal('modalAmigo')">Cancelar</button>
         </div>
     </div>
 
-    <div id="modalInfo" class="modal-overlay">
+    <div id="modalRemover" class="modal-overlay">
         <div class="modal-content">
-            <h3 style="color: #00d9ff; margin-top: 0;">Informações</h3>
-            <div class="info-line"><span><b>Nome:</b></span> <span>Gabriel</span></div>
-            <div class="info-line"><span><b>País:</b></span> <span>Brasil</span></div>
-            <div class="info-line"><span><b>Idade:</b></span> <span>24 anos</span></div>
-            <div class="info-line"><span><b>Nascimento:</b></span> <span>15/04/2002</span></div>
-            <div class="info-line"><span><b>Signo:</b></span> <span>Áries</span></div>
-            <button class="btn primary" style="margin-top: 15px;" onclick="fecharModal('modalInfo')">Fechar</button>
+            <h3 style="color: #ff3232; margin: 0 0 15px;">Remover Amigo?</h3>
+            <p id="textoConfirmacao">Deseja remover este amigo?</p>
+            <button class="btn danger" id="btnConfirmarRemover">Sim, Remover</button>
+            <button class="btn" onclick="fecharModal('modalRemover')">Não, Cancelar</button>
         </div>
     </div>
 
+    <div id="modalInfo" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="color: #00d9ff; margin-bottom: 15px;">Informações</h3>
+            <p><b>Nome:</b> Gabriel</p>
+            <p><b>País:</b> Brasil</p>
+            <p><b>Idade:</b> 24 anos</p>
+            <button class="btn primary" onclick="fecharModal('modalInfo')">Fechar</button>
+        </div>
+    </div>
+
+    <div id="zoomOverlay" class="zoom-overlay" onclick="this.style.display='none'">
+        <img id="imgZoomed" src="">
+    </div>
+
     <div class="main-container">
-        
-        <div class="profile-info">
+        <div class="profile-sidebar">
             <div class="box" style="text-align: center;">
                 <img src="https://i.imgur.com/Z8OtVir.jpeg" class="profile-photo">
-                <p style="font-weight: bold; font-size: 20px; margin: 10px 0 0;">Gabriel</p>
+                <p style="font-weight: bold; font-size: 20px; margin-top: 10px;">Gabriel</p>
             </div>
-
             <div class="box">
                 <button class="btn primary" onclick="abrirModal('modalAmigo')">Adicionar Amigo</button>
                 <button class="btn" onclick="abrirModal('modalInfo')">Info</button>
-            </div>
-
-            <div class="box">
-                <h3>Destaques</h3>
-                <div class="highlights-grid">
-                    <div class="highlight-item" style="background-image: url('https://i.imgur.com/MXo7l6I.jpeg');"></div>
-                    <div class="highlight-item" style="background-image: url('https://i.imgur.com/MXo7l6I.jpeg');"></div>
-                    <div class="highlight-item" style="background-image: url('https://i.imgur.com/h3pyflh.jpeg');"></div>
-                    <div class="highlight-item" style="background-image: url('https://i.imgur.com/aeyBhFj.jpeg');"></div>
-                </div>
+                <button class="btn" onclick="toggleGallery()">Fotos</button>
             </div>
         </div>
 
-        <div class="feed-column">
-            
-            <div class="box friends-list-container">
-                <h3>Amigos</h3>
-                <div id="listaAmigos">
-                    </div>
+        <div class="main-content">
+            <div id="galeriaDireita" class="box gallery-container">
+                <div class="gallery-item" style="background-image: url('https://i.imgur.com/MXo7l6I.jpeg');" onclick="openZoom(this)"></div>
+                <div class="gallery-item" style="background-image: url('https://i.imgur.com/MXo7l6I.jpeg');" onclick="openZoom(this)"></div>
+                <div class="gallery-item" style="background-image: url('https://i.imgur.com/h3pyflh.jpeg');" onclick="openZoom(this)"></div>
+                <div class="gallery-item" style="background-image: url('https://i.imgur.com/aeyBhFj.jpeg');" onclick="openZoom(this)"></div>
+            </div>
+
+            <div class="box">
+                <h3 style="color:#00d9ff; margin-top:0;">Amigos</h3>
+                <div id="listaAmigos"></div>
             </div>
 
             <div class="box">
@@ -169,73 +180,68 @@
                 <textarea id="textoPost" rows="3" placeholder="No que você está pensando?" style="width: 100%; padding: 10px; border-radius: 5px; background: #000; border: 1px solid #333; color: white; box-sizing: border-box;"></textarea>
                 <button class="btn primary" style="margin-top: 10px;" onclick="publicar()">Publicar</button>
             </div>
-
             <div id="feed"></div>
         </div>
-
     </div>
 
     <script>
-        // --- FUNÇÕES DE MODAL ---
+        let elementoParaRemover = null;
+
         function abrirModal(id) { document.getElementById(id).style.display = 'flex'; }
         function fecharModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // --- LÓGICA DE AMIGOS COM CONFIRMAÇÃO ---
+        function toggleGallery() {
+            const g = document.getElementById('galeriaDireita');
+            g.style.display = (g.style.display === 'grid') ? 'none' : 'grid';
+        }
+
+        function openZoom(el) {
+            document.getElementById('imgZoomed').src = el.style.backgroundImage.slice(5, -2);
+            document.getElementById('zoomOverlay').style.display = 'flex';
+        }
+
         function confirmarAdicionarAmigo() {
-            const nomeInput = document.getElementById('nomeAmigoInput');
-            const lista = document.getElementById('listaAmigos');
-
-            if (nomeInput.value.trim() === "") return;
-
+            const nome = document.getElementById('nomeAmigoInput').value;
+            if (!nome) return;
             const div = document.createElement('div');
             div.className = 'friend-item';
-            div.innerText = nomeInput.value;
-            
-            // NOVO: Função de clique com pergunta de confirmação
+            div.innerText = nome;
             div.onclick = function() {
-                const pergunta = confirm("Remover " + this.innerText + " dos amigos?");
-                if (pergunta) {
-                    this.remove();
-                }
+                elementoParaRemover = this;
+                document.getElementById('textoConfirmacao').innerText = "Remover " + nome + " dos amigos?";
+                abrirModal('modalRemover');
             };
-            
-            lista.appendChild(div);
-            nomeInput.value = "";
+            document.getElementById('listaAmigos').appendChild(div);
+            document.getElementById('nomeAmigoInput').value = "";
             fecharModal('modalAmigo');
         }
 
-        // --- LÓGICA DO FEED 24H ---
+        document.getElementById('btnConfirmarRemover').onclick = function() {
+            if (elementoParaRemover) { elementoParaRemover.remove(); elementoParaRemover = null; }
+            fecharModal('modalRemover');
+        };
+
         window.onload = carregarPosts;
-
         function publicar() {
-            const nome = document.getElementById('nomeUsuario').value;
-            const texto = document.getElementById('textoPost').value;
-            const agora = Date.now();
-
-            if (!nome || !texto) return alert("Preencha os campos!");
-
-            const posts = JSON.parse(localStorage.getItem('feed_gabriel')) || [];
-            posts.unshift({ nome, texto, data: agora });
-            localStorage.setItem('feed_gabriel', JSON.stringify(posts));
-
+            const n = document.getElementById('nomeUsuario').value;
+            const t = document.getElementById('textoPost').value;
+            if(!n || !t) return;
+            const posts = JSON.parse(localStorage.getItem('feed_gab')) || [];
+            posts.unshift({ nome: n, texto: t, data: Date.now() });
+            localStorage.setItem('feed_gab', JSON.stringify(posts));
             document.getElementById('textoPost').value = "";
             carregarPosts();
         }
-
         function carregarPosts() {
-            const feed = document.getElementById('feed');
-            const agora = Date.now();
-            const posts = JSON.parse(localStorage.getItem('feed_gabriel')) || [];
-            const validos = posts.filter(p => (agora - p.data) < 86400000); 
-            
-            localStorage.setItem('feed_gabriel', JSON.stringify(validos));
-            feed.innerHTML = "";
-
-            validos.forEach(p => {
+            const f = document.getElementById('feed');
+            const posts = JSON.parse(localStorage.getItem('feed_gab')) || [];
+            const v = posts.filter(p => (Date.now() - p.data) < 86400000);
+            f.innerHTML = "";
+            v.forEach(p => {
                 const d = document.createElement('div');
                 d.className = 'publicacao';
-                d.innerHTML = `<b style="color:#00d9ff">${p.nome}</b> publicou:<br><span style="color:#eee">${p.texto}</span>`;
-                feed.appendChild(d);
+                d.innerHTML = `<b style="color:#00d9ff">${p.nome}</b> publicou:<br>${p.texto}`;
+                f.appendChild(d);
             });
         }
     </script>
