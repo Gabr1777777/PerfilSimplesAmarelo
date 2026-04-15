@@ -23,7 +23,6 @@
     .main-wrapper {
         max-width: 900px;
         margin: 40px auto;
-        /* Estilo de "vidro" com opacidade e blur unificados */
         background: rgba(10, 10, 10, 0.85);
         backdrop-filter: blur(10px);
         border: 1px solid rgba(212, 175, 55, 0.3);
@@ -32,20 +31,18 @@
         overflow: hidden;
     }
 
-    /* --- CABEÇALHO UNIFICADO (FUNDO SOLID REMOVIDO) --- */
+    /* --- CABEÇALHO UNIFICADO --- */
     .header-banner {
         height: 200px;
-        /* Removida a cor sólida; agora usa o fundo herdado do .main-wrapper */
         position: relative;
         border-bottom: 2px solid #d4af37;
-        /* Centralização total para o texto preencher o espaço */
         display: flex;
         justify-content: center;
         align-items: center;
         overflow: hidden;
     }
 
-    /* ANIMAÇÃO DO GRADIENTE DO TEXTO (MANTIDA) */
+    /* ANIMAÇÃO DO GRADIENTE DO TEXTO */
     @keyframes textGradient {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
@@ -59,8 +56,6 @@
         letter-spacing: -2px;
         text-align: center;
         line-height: 1;
-        
-        /* Gradiente nas cores da página (dourado/preto) */
         background: linear-gradient(270deg, #d4af37, #ffdf7e, #1a1a1a, #d4af37);
         background-size: 600% 600%;
         -webkit-background-clip: text;
@@ -70,7 +65,7 @@
         width: 100%;
     }
 
-    /* --- ANIMAÇÕES DA FOTO DE PERFIL (FLUTUANTE E BRILHO) - RESTAURADAS --- */
+    /* --- ANIMAÇÕES DA FOTO DE PERFIL (FLUTUANTE E BRILHO) --- */
     @keyframes floatAvatar {
         0% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
@@ -85,10 +80,9 @@
 
     .avatar-box {
         position: absolute;
-        bottom: -60px;
+        bottom: -45px; /* Subido levemente para visibilidade total */
         left: 40px;
         text-align: center;
-        /* Aplica o efeito flutuante em todo o bloco */
         animation: floatAvatar 4s ease-in-out infinite; 
     }
 
@@ -98,11 +92,10 @@
         border-radius: 50%;
         border: 4px solid #d4af37;
         background: url('https://i.imgur.com/YDKnxJi.jpeg') center/cover;
-        /* Aplica o efeito animado de brilho na borda */
         animation: glowAvatar 3s infinite; 
     }
 
-    /* --- CONTEÚDO - MANTIDO --- */
+    /* --- CONTEÚDO --- */
     .profile-content {
         display: grid;
         grid-template-columns: 1fr 320px;
@@ -126,7 +119,7 @@
         font-size: 18px;
     }
 
-    /* --- ABAS E BOTÕES - MANTIDO --- */
+    /* --- ABAS E BOTÕES --- */
     .nav-tabs {
         display: flex;
         gap: 10px;
@@ -150,7 +143,7 @@
     .content-pane { display: none; }
     .active-pane { display: block; animation: fadeIn 0.4s ease; }
 
-    /* --- GALERIA GRID - MANTIDO --- */
+    /* --- GALERIA GRID --- */
     .gallery-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -169,7 +162,7 @@
     }
     .gal-thumb:hover { border-color: #d4af37; transform: scale(1.05); }
 
-    /* --- PLAYER - MANTIDO --- */
+    /* --- PLAYER --- */
     #player-section {
         display: none; 
         background: #000;
@@ -191,7 +184,7 @@
         border-radius: 3px;
     }
 
-    /* --- ZOOM & SEGURANÇA - MANTIDO --- */
+    /* --- ZOOM & SEGURANÇA --- */
     #zoom-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.9); display: none;
@@ -221,8 +214,7 @@
         <div class="header-text">Nome Aqui</div>
         <div class="avatar-box">
             <div class="avatar-img"></div>
-            <div id="status-dot" style="width: 20px; height: 20px; border-radius: 50%; border: 3px solid white; background-color: #9e9e9e; margin: 10px auto;" title="Verificando..."></div>
-        </div>
+            </div>
     </div>
 
     <div class="profile-content">
@@ -288,7 +280,6 @@
 <div id="sec-msg">Copyright - Acesso Proibido</div>
 
 <script>
-    /* --- JAVASCRIPT MANTIDO INTEGRALMENTE --- */
     function openTab(id) {
         document.querySelectorAll('.content-pane').forEach(p => p.classList.remove('active-pane'));
         document.getElementById(id).classList.add('active-pane');
@@ -329,16 +320,6 @@
         if(s.style.display === "block") { s.style.display = "none"; }
         else { s.style.display = "block"; if(!aud.src) loadM(0); }
     }
-
-    async function getStat() {
-        try {
-            const r = await fetch('https://illuxat.com/api/online/Gabr');
-            const j = await r.json();
-            const on = j.data?.status?.toLowerCase() === 'online';
-            document.getElementById('status-dot').style.backgroundColor = on ? "#22c55e" : "#ef4444";
-        } catch(e) { document.getElementById('status-dot').style.backgroundColor = "#9e9e9e"; }
-    }
-    getStat(); setInterval(getStat, 60000);
 
     function sAlert() {
         const a = document.getElementById('sec-msg');
