@@ -1,444 +1,283 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Perfil Gabr - XatSpace</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        /* CONFIGURAÇÕES GERAIS E BLOQUEIOS ESTRITOS */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            user-select: none;
-            -webkit-user-drag: none;
-        }
+<style>
+/* --- CONFIGURAÇÕES GERAIS E FUNDO DO PERFIL --- */
+#xat_user_id, body {
+    /* Fundo clássico de estrelas do xat.me/Gold */
+    background-image: url('https://xat.com/web_40b/bg/stars.gif') !important;
+    background-repeat: repeat !important;
+    background-attachment: fixed !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #e0e0e0;
+}
 
-        body {
-            overflow: hidden;
-            background: #000;
-            color: white;
-            height: 100vh;
-            width: 100vw;
-        }
+/* --- CONTAINER PRINCIPAL --- */
+.gold-profile-container {
+    max-width: 850px;
+    margin: 20px auto;
+    background: rgba(10, 10, 10, 0.9); /* Fundo escuro semi-transparente */
+    border: 2px solid #d4af37; /* Borda Dourada */
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); /* Brilho dourado */
+    overflow: hidden;
+    padding-bottom: 20px;
+}
 
-        .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-image: url('https://i.imgur.com/4kRbv63.gif');
-            background-size: cover;
-            background-position: center;
-            z-index: -2;
-        }
+/* --- CABEÇALHO (BANNER E FOTO DE PERFIL) --- */
+.profile-header {
+    position: relative;
+    height: 250px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+    border-bottom: 2px solid #d4af37;
+    text-align: center;
+}
 
-        .overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
+.profile-pic-container {
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
-        /* TELA DE ENTRADA */
-        #splash-screen {
-            position: fixed;
-            width: 100%; height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 200;
-            background: rgba(0,0,0,0.8);
-            transition: opacity 1s;
-        }
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    background-image: url('https://i.imgur.com/YDKnxJi.jpeg'); /* FOTO 1 - PERFIL */
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    border: 4px solid #d4af37; /* Borda Dourada na foto */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.8);
+    transition: transform 0.3s ease;
+}
 
-        .btn-entrar {
-            padding: 25px 80px;
-            font-size: 28px;
-            font-weight: 800;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientAnim 4s ease infinite;
-            box-shadow: 0 0 40px rgba(231, 60, 126, 0.5);
-            transition: 0.3s;
-        }
+.profile-pic:hover {
+    transform: scale(1.05);
+}
 
-        .btn-entrar:hover { transform: scale(1.15); }
+/* --- SEÇÃO DE INFORMAÇÕES DO USUÁRIO --- */
+.user-info {
+    margin-top: 70px;
+    text-align: center;
+    padding: 0 20px;
+}
 
-        @keyframes gradientAnim {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+.user-name {
+    font-size: 32px;
+    font-weight: bold;
+    color: #d4af37; /* Nome Dourado */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 5px;
+}
 
-        /* LAYOUT PRINCIPAL */
-        #main-content {
-            display: none;
-            width: 100%; height: 100%;
-            position: relative;
-        }
+.user-status {
+    font-size: 16px;
+    color: #aaaaaa;
+    font-style: italic;
+    margin-bottom: 15px;
+}
 
-        /* NAVEGAÇÃO */
-        .nav-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            z-index: 50;
-        }
+.user-badges {
+    margin-bottom: 20px;
+}
 
-        .nav-container button {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            color: white;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.4s;
-        }
+.badge {
+    display: inline-block;
+    padding: 5px 12px;
+    margin: 0 5px;
+    background-color: #d4af37;
+    color: #000;
+    font-weight: bold;
+    font-size: 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
 
-        .nav-container button:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-3px); }
+/* --- BLOCOS DE CONTEÚDO (ABOUT / GALERIA / MUSIC) --- */
+.content-sections {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 20px;
+    justify-content: space-between;
+}
 
-        /* WIDGETS */
-        .widget {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: 0.3s;
-        }
-        .widget:hover { background: rgba(255, 255, 255, 0.1); border-color: #23a6d5; }
+.content-box {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid #444;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+}
 
-        .widget-left { top: 50px; left: 40px; width: 220px; cursor: pointer; }
-        .widget-right { top: 50px; right: 40px; width: 220px; }
-        
-        .widget-right a {
-            display: block;
-            color: white;
-            text-decoration: none;
-            margin-top: 10px;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-        .widget-right a:hover { color: #e73c7e; transform: translateX(5px); }
+/* Bloco Esquerdo: Sobre mim */
+.about-section {
+    flex: 0 0 58%;
+}
 
-        .widget-bottom { bottom: 40px; left: 50%; transform: translateX(-50%); width: 60%; text-align: center; cursor: pointer; }
+.about-section h3 {
+    color: #d4af37;
+    border-bottom: 1px solid #d4af37;
+    padding-bottom: 5px;
+    margin-top: 0;
+}
 
-        /* SEÇÕES */
-        .section {
-            display: none;
-            width: 100%; height: 100%;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            animation: slideUp 0.6s ease-out;
-        }
+.about-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #cccccc;
+}
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+/* Bloco Direito: Galeria e Música */
+.side-section {
+    flex: 0 0 38%;
+    display: flex;
+    flex-direction: column;
+}
 
-        /* PERFIL */
-        .profile-card {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 40px;
-            border-radius: 30px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
+/* --- GALERIA DE FOTOS --- */
+.gallery-section h3 {
+    color: #d4af37;
+    margin-top: 0;
+}
 
-        .avatar-container {
-            position: relative;
-            width: 160px; height: 160px;
-            margin: 0 auto 20px;
-        }
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    gap: 8px;
+}
 
-        .avatar {
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            border: 5px solid #fff;
-            animation: float 3s ease-in-out infinite;
-            object-fit: cover;
-        }
+.photo-item {
+    width: 100%;
+    padding-top: 100%; /* Mantém o aspect ratio quadrado */
+    background-size: cover;
+    background-position: center;
+    border-radius: 4px;
+    border: 1px solid #555;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+.photo-item:hover {
+    border-color: #d4af37;
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(212,175,55,0.5);
+}
 
-        #status-dot {
-            position: absolute;
-            bottom: 10px; right: 10px;
-            z-index: 10;
-        }
+/* --- PLAYER DE MÚSICA (Widget do xat ou HTML5) --- */
+.music-section h3 {
+    color: #d4af37;
+    margin-top: 0;
+}
 
-        /* GALERIA */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 170px);
-            gap: 15px;
-        }
+.music-player-container {
+    text-align: center;
+    padding: 10px 0;
+}
 
-        .gallery-grid img {
-            width: 170px; height: 170px;
-            object-fit: cover;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.5s;
-        }
+/* Exemplo de player HTML5 simples - substitua pelo seu widget se preferir */
+audio {
+    width: 100%;
+    height: 35px;
+    outline: none;
+}
+audio::-webkit-media-controls-panel {
+    background-color: #d4af37;
+}
 
-        .gallery-grid img:hover { transform: scale(1.1); border: 2px solid #e73c7e; }
+/* --- RODAPÉ --- */
+.profile-footer {
+    text-align: center;
+    font-size: 11px;
+    color: #666;
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #333;
+}
 
-        /* PLAYER MUSICA */
-        .player-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            width: 340px;
-        }
+/* --- RESPONSIVIDADE (PARA CELULARES) --- */
+@media (max-width: 768px) {
+    .content-sections {
+        flex-direction: column;
+    }
+    .about-section, .side-section {
+        flex: 0 0 100%;
+    }
+    .profile-header {
+        height: 180px;
+    }
+    .profile-pic {
+        width: 110px;
+        height: 110px;
+    }
+    .profile-pic-container {
+        bottom: -45px;
+    }
+    .user-info {
+        margin-top: 55px;
+    }
+}
+</style>
 
-        .btn-action {
-            background: white;
-            color: black;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 50px;
-            cursor: pointer;
-            margin: 5px;
-            font-weight: bold;
-            font-size: 12px;
-            transition: 0.3s;
-        }
-
-        .btn-action:hover { background: #23a6d5; color: white; }
-
-        .vol-label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 15px;
-            margin-bottom: 5px;
-            color: #23d5ab;
-        }
-
-        /* ALERTAS E SEGURANÇA */
-        #security-alert {
-            position: fixed;
-            bottom: -60px; left: 50%; transform: translateX(-50%);
-            background: linear-gradient(90deg, #e73c7e, #23a6d5);
-            padding: 15px 40px;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: 0.5s;
-            z-index: 1000;
-        }
-
-        #lightbox {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 300;
-            justify-content: center; align-items: center;
-        }
-
-        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 10px; }
-    </style>
-</head>
-<body oncontextmenu="return showAlert();">
-
-    <div class="bg-glow"></div>
-    <div class="overlay"></div>
-
-    <div id="splash-screen">
-        <button class="btn-entrar" onclick="enterProfile()">ENTRAR NO ESPAÇO</button>
+<div class="gold-profile-container">
+    
+    <div class="profile-header">
+        <div class="profile-pic-container">
+            <div class="profile-pic"></div>
+        </div>
     </div>
 
-    <div id="main-content">
+    <div class="user-info">
+        <div class="user-name">Seu Nome Aqui</div>
+        <div class="user-status">"O brilho do ouro é eterno."</div>
         
-        <section id="inicio" class="section" style="display: flex;">
-            <div class="nav-container">
-                <button onclick="showSection('inicio')">INÍCIO</button>
-                <button onclick="showSection('perfil')">MEU PERFIL</button>
-                <button onclick="showSection('galeria')">GALERIA</button>
-                <button onclick="showSection('musica')">PLAYER</button>
-            </div>
-            <h1 style="font-size: 5rem; text-shadow: 0 0 25px #23a6d5; font-weight: 800;">GABR</h1>
-            <p style="letter-spacing: 8px; opacity: 0.8; margin-top: 10px;">BEM-VINDO AO MEU MUNDO DIGITAL</p>
-        </section>
-
-        <div class="widget widget-left">
-            <h4 style="color: #23d5ab;">Local Time</h4>
-            <div id="clock" style="font-size: 24px; font-weight: bold;">00:00:00</div>
-            <p style="font-size: 12px; opacity: 0.7;">São Paulo, BR</p>
+        <div class="user-badges">
+            <span class="badge">Gold Member</span>
+            <span class="badge">VIP</span>
+            <span class="badge">Trader</span>
         </div>
-
-        <div class="widget widget-right">
-            <h4 style="color: #e73c7e;">Xat Comunidade</h4>
-            <a href="https://xat.com/gabr" target="_blank">✨ xat.com/gabr</a>
-            <a href="https://xat.com/tuga" target="_blank">🇵🇹 Xat TUGA</a>
-            <a href="https://xat.com/butecopremium" target="_blank">🍻 Xat Buteco</a>
-            <a href="https://xat.com/trade" target="_blank">🔄 Xat Trade</a>
-        </div>
-
-        <div class="widget widget-bottom" onclick="changeQuote()">
-            <h3 id="quote">"O segredo da criatividade é saber esconder suas fontes."</h3>
-            <span style="font-size: 10px; opacity: 0.5;">(Clique para mudar a frase)</span>
-        </div>
-
-        <section id="perfil" class="section">
-            <div class="nav-container">
-                <button onclick="showSection('inicio')">INÍCIO</button>
-                <button onclick="showSection('perfil')">MEU PERFIL</button>
-                <button onclick="showSection('galeria')">GALERIA</button>
-                <button onclick="showSection('musica')">PLAYER</button>
-            </div>
-            <div class="profile-card">
-                <div class="avatar-container">
-                    <img src="https://i.imgur.com/YDKnxJi.jpeg" class="avatar">
-                    <div id="status-dot"></div>
-                </div>
-                <h2>Gabr Personal</h2>
-                <div style="margin: 20px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left;">
-                    <div>📅 <b>Nasc:</b> 14/04</div>
-                    <div>♈ <b>Signo:</b> Áries</div>
-                    <div>🇧🇷 <b>País:</b> Brasil</div>
-                    <div>🗣️ <b>Ling:</b> PT/ES</div>
-                </div>
-            </div>
-        </section>
-
-        <section id="galeria" class="section">
-            <div class="nav-container">
-                <button onclick="showSection('inicio')">INÍCIO</button>
-                <button onclick="showSection('perfil')">MEU PERFIL</button>
-                <button onclick="showSection('galeria')">GALERIA</button>
-                <button onclick="showSection('musica')">PLAYER</button>
-            </div>
-            <div class="gallery-grid">
-                <img src="https://i.imgur.com/LSZOs8Q.jpeg" onclick="openZoom(this.src)">
-                <img src="https://i.imgur.com/BGULIuI.jpeg" onclick="openZoom(this.src)">
-                <img src="https://i.imgur.com/HCn75BA.jpeg" onclick="openZoom(this.src)">
-                <img src="https://i.imgur.com/QvXRzEF.jpeg" onclick="openZoom(this.src)">
-                <img src="https://i.imgur.com/0h6IQIZ.jpeg" onclick="openZoom(this.src)">
-                <img src="https://i.imgur.com/YDKnxJi.jpeg" onclick="openZoom(this.src)">
-            </div>
-        </section>
-
-        <section id="musica" class="section">
-            <div class="nav-container">
-                <button onclick="showSection('inicio')">INÍCIO</button>
-                <button onclick="showSection('perfil')">MEU PERFIL</button>
-                <button onclick="showSection('galeria')">GALERIA</button>
-                <button onclick="showSection('musica')">PLAYER</button>
-            </div>
-            <div class="player-box">
-                <h3 id="track-name">Carregando...</h3>
-                <audio id="audio-player"></audio>
-                <div style="margin: 15px 0;">
-                    <button class="btn-action" onclick="prevTrack()">⏮</button>
-                    <button class="btn-action" onclick="togglePlay()" id="play-btn">▶</button>
-                    <button class="btn-action" onclick="nextTrack()">⏭</button>
-                </div>
-                
-                <span class="vol-label">Vol</span>
-                <div>
-                    <button class="btn-action" onclick="setVolume(0)">0%</button>
-                    <button class="btn-action" onclick="setVolume(0.5)">50%</button>
-                    <button class="btn-action" onclick="setVolume(1)">100%</button>
-                </div>
-            </div>
-        </section>
     </div>
 
-    <div id="lightbox" onclick="this.style.display='none'">
-        <img id="zoom-img" src="">
+    <div class="content-sections">
+        
+        <div class="content-box about-section">
+            <h3>&shy; Sobre Mim</h3>
+            <div class="about-text">
+                <p>Olá! Bem-vindo ao meu xatspace.</p>
+                <p>Sou um colecionador e entusiasta do xat.me. Adoro negociar powers raros e fazer novas amizades na comunidade. Este perfil foi criado usando o tema Gold clássico com um toque moderno.</p>
+                <p>Sinta-se à vontade para me enviar uma mensagem se estiver interessado em trading ou apenas para conversar.</p>
+                <p><strong>Meus Powers Favoritos:</strong> Gold, Purple, EveryPower.</p>
+            </div>
+        </div>
+
+        <div class="side-section">
+            
+            <div class="content-box gallery-section">
+                <h3>&shy; Galeria</h3>
+                <div class="photo-grid">
+                    <div class="photo-item" style="background-image: url('https://i.imgur.com/LSZOs8Q.jpeg');" title="Foto 2"></div>
+                    <div class="photo-item" style="background-image: url('https://i.imgur.com/BGULIuI.jpeg');" title="Foto 3"></div>
+                    <div class="photo-item" style="background-image: url('https://i.imgur.com/HCn75BA.jpeg');" title="Foto 4"></div>
+                    <div class="photo-item" style="background-image: url('https://i.imgur.com/QvXRzEF.jpeg');" title="Foto 5"></div>
+                    <div class="photo-item" style="background-image: url('https://i.imgur.com/0h6IQIZ.jpeg');" title="Foto 6"></div>
+                    <div class="photo-item" style="background-color: #222; opacity: 0.3;" title="Vazio"></div>
+                </div>
+            </div>
+
+            <div class="content-box music-section">
+                <h3>&shy; Music Player</h3>
+                <div class="music-player-container">
+                    <audio controls loop>
+                        <source src="SUA_MUSICA.mp3" type="audio/mpeg">
+                        Seu navegador não suporta o player de áudio.
+                    </audio>
+                    <div style="font-size:12px; color:#888; margin-top:5px;">Tocando: Nome da Música</div>
+                </div>
+            </div>
+            
+        </div>
+
     </div>
 
-    <div id="security-alert">Copyright © Gabr - Acesso Proibido</div>
+    <div class="profile-footer">
+        xat.me Gold Profile Design © 2024
+    </div>
 
-    <script>
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString();
-        }
-        setInterval(updateClock, 1000);
-
-        // --- SISTEMA DE FRASES ---
-        const quotes = [
-            "\"O segredo da criatividade é saber esconder suas fontes.\"",
-            "\"A vida é curta demais para ter um perfil feio.\"",
-            "\"Foco, força e muito brilho.\"",
-            "\"Espaço reservado para grandes ideias.\""
-        ];
-        function changeQuote() {
-            const q = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quote').innerText = q;
-        }
-
-        function enterProfile() {
-            document.getElementById('splash-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                startMusic();
-            }, 1000);
-        }
-
-        function showSection(id) {
-            document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
-            document.getElementById(id).style.display = 'flex';
-        }
-
-        async function updateStatus() {
-            try {
-                const res = await fetch('https://illuxat.com/api/online/Gabr');
-                const json = await res.json();
-                const dot = document.getElementById('status-dot');
-                const isOnline = json.data?.status?.toLowerCase() === 'online';
-                dot.style.width = "25px"; dot.style.height = "25px"; dot.style.borderRadius = "50%"; dot.style.border = "4px solid white";
-                dot.style.backgroundColor = isOnline ? "#22c55e" : "#ef4444";
-            } catch (e) { document.getElementById('status-dot').style.backgroundColor = "#9e9e9e"; }
-        }
-        updateStatus(); setInterval(updateStatus, 60000);
-
-        const playlist = [
-            { name: "Abraham-Mateo - BAI LALA", url: "https://www.dropbox.com/scl/fi/gw8940zfvm60ul7malxox/Abraham-Mateo-BAI-LALA.mp3?rlkey=puytwnkxllb6tmz35htfr8tmh&st=ud55ktgf&raw=1" },
-            { name: "Alex Warren - Ordinary", url: "https://www.dropbox.com/scl/fi/lpcx92wv63wzcm6z56l7q/Alex-Warren-Ordinary.mp3?rlkey=pdxjo778t66ecrja08pfyij6k&st=zb53k17t&raw=1" },
-            { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
-            { name: "Rising to the Night", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" },
-            { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=2ldonj76&raw=1" }
-        ];
-
-        let currentTrack = 0;
-        const audio = document.getElementById('audio-player');
-        function loadTrack(idx) { audio.src = playlist[idx].url; document.getElementById('track-name').innerText = playlist[idx].name; }
-        function startMusic() { loadTrack(currentTrack); audio.play(); document.getElementById('play-btn').innerText = "⏸"; }
-        function togglePlay() { if(audio.paused) { audio.play(); document.getElementById('play-btn').innerText = "⏸"; } else { audio.pause(); document.getElementById('play-btn').innerText = "▶"; }}
-        function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); audio.play(); }
-        function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); audio.play(); }
-        
-        function setVolume(val) { audio.volume = val; }
-        
-        audio.onended = () => nextTrack();
-
-        function openZoom(src) { document.getElementById('zoom-img').src = src; document.getElementById('lightbox').style.display = 'flex'; }
-
-        function showAlert() {
-            const alertBox = document.getElementById('security-alert');
-            alertBox.style.bottom = '30px';
-            setTimeout(() => { alertBox.style.bottom = '-60px'; }, 2000);
-            return false;
-        }
-
-        document.onkeydown = function(e) {
-            if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 73 || e.keyCode === 123)) {
-                showAlert(); return false;
-            }
-        };
-    </script>
-</body>
-</html>
+</div>
