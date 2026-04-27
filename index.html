@@ -408,6 +408,19 @@
     // Configuração inicial
     audio.volume = 0.5;
 
+    // Tocar automaticamente ao clicar em qualquer botão ou link da página
+    const autoPlayOnce = (e) => {
+        if (e.target.closest('button') || e.target.closest('a')) {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    playIcon.classList.replace('ph-play', 'ph-pause');
+                    document.removeEventListener('click', autoPlayOnce);
+                }).catch(err => console.log("Aguardando interação real..."));
+            }
+        }
+    };
+    document.addEventListener('click', autoPlayOnce);
+
     function togglePlayerCard() {
         playerCard.classList.toggle('hidden');
         if (!playerCard.classList.contains('hidden')) playerCard.classList.add('flex');
@@ -423,14 +436,13 @@
         }
     }
 
-    // Função para ciclar o volume (0 -> 0.5 -> 1)
     function cycleVolume() {
         if (audio.volume === 0.5) {
-            updateVolume(1); // Vai para 100%
+            updateVolume(1);
         } else if (audio.volume === 1) {
-            updateVolume(0); // Vai para 0%
+            updateVolume(0);
         } else {
-            updateVolume(0.5); // Qualquer outro valor (incluindo 0) vai para 50%
+            updateVolume(0.5);
         }
     }
 
@@ -438,7 +450,6 @@
         audio.volume = value;
         volumeSlider.value = value;
         
-        // Atualiza o ícone conforme o volume
         if (value == 0) {
             volumeIcon.className = 'ph ph-speaker-x text-brand-400 text-sm';
         } else if (value <= 0.5) {
@@ -449,9 +460,10 @@
     }
 
     volumeSlider.addEventListener('input', (e) => {
-        updateVolume(e.target.value);
+        updateVolume(parseFloat(e.target.value));
     });
 
+    // Fechar ao clicar fora
     document.addEventListener('click', (e) => {
         const container = document.getElementById('music-player-container');
         if (!container.contains(e.target)) {
